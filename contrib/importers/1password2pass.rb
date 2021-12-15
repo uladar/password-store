@@ -82,8 +82,9 @@ if File.extname(filename) =~ /.txt/i
 
   # Import CSV/TSV
   CSV.foreach(filename, {col_sep: delimiter, headers: true, header_converters: :symbol}) do |entry|
+    name = "#{(options.group + "/") if options.group}#{entry[options.name]}"
     pass = {}
-    pass[:name] = "#{(options.group + "/") if options.group}#{entry[options.name]}"
+    pass[:name] = passwords.find { |i| i[:name] == name } ? "#{name} - #{entry[:username]}" : name
     pass[:title] = entry[:title]
     pass[:password] = entry[:password]
     pass[:login] = entry[:username]
